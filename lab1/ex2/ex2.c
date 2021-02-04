@@ -16,11 +16,12 @@ typedef struct NODE{
 } node;
 
 //Function Prototypes
-node* insertAt(node*, int, int, int);
+void insertAt(node**, int, int, int);
 
 void printList(node*);
 void destroyList(node*);
 
+int size = 0;
 
 
 int main()
@@ -33,7 +34,7 @@ int main()
         //Add to head
         
         for (int i = 0; i < copies; i++) {
-            myList = insertAt(myList, position, copies, newValue);
+            insertAt(&myList, position, copies, newValue);
         }
         //printf("1\n");
     } 
@@ -54,28 +55,51 @@ int main()
 }
 
 //Actual Function Implementations
-node* insertAt(node* head, int position, int copies, int newValue)
+void insertAt(node** curr, int position, int copies, int newValue)
 {
-    //Fill in your code here
+   //Fill in your code here
+   node* temp = (node*)malloc(sizeof(node));
+   
+    if (position > size) {
+         for (int i = 0; i < size-1; i++) {
+             curr = &(*curr)->next;
+         }
+        
+        if (size == 0) {
+            temp->data = newValue;
+            (*curr) = temp;
+            size++;
+            position = -1;
+            
+        } else {
+            temp->data = newValue;
+            (*curr)->next = temp;
+            size++;
+            position = -1;
+        }
+       
+         
+         
+    } 
+    
     while(position >= 0) {
         
         if (position == 0) {
-            node* temp = (node*)malloc(sizeof(node));
             temp->data = newValue;
-            
-            temp->next = head;
-            
-            head = temp;
+            temp->next = *(curr);
+            (*curr) = temp;
+            size++;
         } else {
-            head = &head->next;
+            
+            curr = &(*curr)->next;
         }
         position--;
-    }
         
+    }
     
   
         
-    return head;    //change this!
+        
 }
  
 void printList(node* head)
@@ -106,6 +130,13 @@ void destroyList(node* head)
     }
     head = NULL;
 }
+
+
+
+
+
+
+
 
 
 
